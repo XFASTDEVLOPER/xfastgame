@@ -1,0 +1,305 @@
+function collision(a, b) {
+    return (
+        a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y
+    );
+}
+
+function checkCollision() {
+    enemies.forEach(enemy => {
+        if (collision(car, enemy)) {
+            gameOver = true;
+        }
+    });
+}
+
+function showGameOver() {
+    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+
+    ctx.font = "45px Arial";
+    ctx.fillText(
+        "Game Over",
+        canvas.width / 2,
+        canvas.height / 2 - 30
+    );
+
+    ctx.font = "25px Arial";
+    ctx.fillText(
+        "Score: " + score,
+        canvas.width / 2,
+        canvas.height / 2 + 20
+    );
+
+    ctx.font = "18px Arial";
+    ctx.fillText(
+        "Touch یا Space برای شروع دوباره",
+        canvas.width / 2,
+        canvas.height / 2 + 60
+    );
+}
+
+function restart() {
+    enemies = [];
+    score = 0;
+    gameOver = false;
+    resetCar();
+}
+
+function gameLoop() {
+
+    if (!gameOver) {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        drawRoad();
+        updateCar();
+
+        drawCar();
+
+        updateEnemies();
+        drawEnemies();
+
+        checkCollision();
+        drawScore();
+
+    } else {
+        showGameOver();
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+document.addEventListener("keydown", e => {
+    if (e.code === "Space" && gameOver) {
+        restart();
+    }
+});
+
+canvas.addEventListener("touchstart", () => {
+    if (gameOver) restart();
+});
+
+canvas.addEventListener("click", () => {
+    if (gameOver) restart();
+});
+
+gameLoop();
+function movePaddle(){
+
+    if(up) paddle.y -= paddle.speed;
+    if(down) paddle.y += paddle.speed;
+
+    if(paddle.y < 0)
+        paddle.y = 0;
+
+    if(paddle.y + paddle.height > canvas.height)
+        paddle.y = canvas.height - paddle.height;
+}
+
+
+function moveEnemy(){
+
+    let center = enemy.y + enemy.height/2;
+
+    if(center < ball.y)
+        enemy.y += enemy.speed;
+
+    if(center > ball.y)
+        enemy.y -= enemy.speed;
+
+    if(enemy.y < 0)
+        enemy.y = 0;
+
+    if(enemy.y + enemy.height > canvas.height)
+        enemy.y = canvas.height - enemy.height;
+}
+
+
+function moveBall(){
+
+    ball.x += ball.speedX;
+    ball.y += ball.speedY;
+
+
+    if(ball.y <= 0 || ball.y + ball.size >= canvas.height){
+        ball.speedY *= -1;
+    }
+
+
+    if(
+        ball.x < paddle.x + paddle.width &&
+        ball.x > paddle.x &&
+        ball.y > paddle.y &&
+        ball.y < paddle.y + paddle.height
+    ){
+        ball.speedX *= -1;
+        ball.x = paddle.x + paddle.width;
+    }
+
+
+    if(
+        ball.x + ball.size > enemy.x &&
+        ball.x < enemy.x + enemy.width &&
+        ball.y > enemy.y &&
+        ball.y < enemy.y + enemy.height
+    ){
+        ball.speedX *= -1;
+        ball.x = enemy.x - ball.size;
+    }
+
+
+    if(ball.x < 0){
+        enemyScore++;
+        reset();
+    }
+
+
+    if(ball.x > canvas.width){
+        playerScore++;
+        reset();
+    }
+}
+
+
+function draw(){
+
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+
+    ctx.fillStyle = "white";
+
+    ctx.fillRect(
+        paddle.x,
+        paddle.y,
+        paddle.width,
+        paddle.height
+    );
+
+
+    ctx.fillRect(
+        enemy.x,
+        enemy.y,
+        enemy.width,
+        enemy.height
+    );
+
+
+    ctx.beginPath();
+    ctx.arc(
+        ball.x,
+        ball.y,
+        ball.size,
+        0,
+        Math.PI*2
+    );
+    ctx.fill();
+
+
+    ctx.font="35px Arial";
+    ctx.fillText(
+        playerScore+" - "+enemyScore,
+        canvas.width/2-40,
+        50
+    );
+}
+let gameOver = false;
+
+function gameLoop(){
+
+    if(!gameOver){
+
+        movePaddle();
+        moveEnemy();
+        moveBall();
+        draw();
+
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+
+function showWinner(){
+
+    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.fillStyle="white";
+    ctx.textAlign="center";
+
+    ctx.font="45px Arial";
+
+    let text = playerScore > enemyScore
+        ? "You Win!"
+        : "You Lose!";
+
+    ctx.fillText(
+        text,
+        canvas.width/2,
+        canvas.height/2
+    );
+}
+
+
+function checkWin(){
+
+    if(playerScore >= 5 || enemyScore >= 5){
+        gameOver = true;
+        showWinner();
+    }
+
+}
+
+
+// جایگزین تابع gameLoop قبلی کن:
+function gameLoop(){
+
+    if(!gameOver){
+
+        movePaddle();
+        moveEnemy();
+        moveBall();
+        checkWin();
+        draw();
+
+    } else {
+        showWinner();
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+
+canvas.addEventListener("click",()=>{
+    if(gameOver){
+        playerScore=0;
+        enemyScore=0;
+        gameOver=false;
+        reset();
+    }
+});
+
+
+canvas.addEventListener("touchstart",()=>{
+    if(gameOver){
+        playerScore=0;
+        enemyScore=0;
+        enemyScore=0;
+        gameOver=false;
+        reset();
+    }
+});
+
+
+gameLoop();
