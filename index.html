@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XFAST Gaming</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050505;
+color:white;
+overflow-x:hidden;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 40px;
+background:#111;
+border-bottom:2px solid cyan;
+position:sticky;
+top:0;
+}
+
+.logo{
+font-size:35px;
+font-weight:bold;
+color:#00e5ff;
+text-shadow:0 0 15px cyan;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+transition:.3s;
+}
+
+nav a:hover{
+color:#00e5ff;
+}
+
+.hero{
+height:90vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+background:radial-gradient(circle,#111,#050505);
+}
+
+.hero h1{
+font-size:60px;
+color:#00e5ff;
+text-shadow:0 0 20px cyan;
+}
+
+.hero p{
+margin-top:20px;
+font-size:20px;
+max-width:700px;
+}
+
+.btn{
+margin-top:35px;
+padding:15px 35px;
+background:transparent;
+border:2px solid cyan;
+color:white;
+border-radius:50px;
+text-decoration:none;
+transition:.3s;
+}
+
+.btn:hover{
+background:cyan;
+color:black;
+box-shadow:0 0 25px cyan;
+}
+
+.cards{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:25px;
+padding:70px 20px;
+}
+
+.card{
+width:280px;
+background:#111;
+padding:25px;
+border:2px solid cyan;
+border-radius:20px;
+text-align:center;
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+box-shadow:0 0 25px cyan;
+}
+
+footer{
+text-align:center;
+padding:30px;
+border-top:2px solid cyan;
+margin-top:40px;
+color:#aaa;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+
+<div class="logo">XFAST</div>
+
+<nav>
+<a href="#">خانه</a>
+<a href="about.html">درباره</a>
+<a href="games.html">بازی‌ها</a>
+</nav>
+
+</header>
+
+<section class="hero">
+
+<h1>Welcome To XFAST</h1>
+
+<p>
+به سایت شخصی و گیمینگ من خوش آمدید.
+در این سایت می‌توانید بازی‌های مختلف را اجرا کنید.
+</p>
+
+<a class="btn" href="games.html">
+شروع بازی
+</a>
+
+</section>
+
+<section class="cards">
+
+<div class="card">
+
+<h2>👤 درباره من</h2>
+
+<p>
+Mohmmadhoseinxfast
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>🎯 بازی‌ها</h2>
+
+<p>
+تیراندازی و ماشین
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>⚡ طراحی</h2>
+
+<p>
+Neon Gaming Website
+</p>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 XFAST Gaming
+
+</footer>
+
+</body>
+</html>
