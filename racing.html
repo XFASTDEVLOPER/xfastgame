@@ -1,0 +1,234 @@
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+let score = 0;
+let gameOver = false;
+
+const car = {
+    width: 50,
+    height: 90,
+    x: 0,
+    y: 0,
+    speed: 8
+};
+
+function resetCar() {
+    car.x = canvas.width / 2 - car.width / 2;
+    car.y = canvas.height - 120;
+}
+resetCar();
+
+let enemies = [];
+
+let left = false;
+let right = false;
+
+// کیبورد
+document.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft") left = true;
+    if (e.key === "ArrowRight") right = true;
+});
+
+document.addEventListener("keyup", e => {
+    if (e.key === "ArrowLeft") left = false;
+    if (e.key === "ArrowRight") right = false;
+});
+
+// دکمه‌های موبایل
+const leftBtn = document.getElementById("left");
+const rightBtn = document.getElementById("right");
+
+if (leftBtn) {
+    leftBtn.ontouchstart = () => left = true;
+    leftBtn.ontouchend = () => left = false;
+}
+
+if (rightBtn) {
+    rightBtn.ontouchstart = () => right = true;
+    rightBtn.ontouchend = () => right = false;
+}
+
+function updateCar() {
+    if (left) car.x -= car.speed;
+    if (right) car.x += car.speed;
+
+    if (car.x < 20) car.x = 20;
+    if (car.x > canvas.width - car.width - 20)
+        car.x = canvas.width - car.width - 20;
+}
+
+function drawRoad() {
+    ctx.fillStyle = "#555";
+    ctx.fillRect(canvas.width / 2 - 5, 0, 10, canvas.height);
+
+    for (let i = 0; i < canvas.height; i += 60) {
+        ctx.fillStyle = "white";
+        ctx.fillRect(canvas.width / 2 - 3, i, 6, 30);
+    }
+}
+
+function drawCar() {
+    ctx.fillStyle = "dodgerblue";
+    ctx.fillRect(car.x, car.y, car.width, car.height);
+}
+// ساخت ماشین‌های دشمن
+setInterval(() => {
+    if (gameOver) return;
+
+    enemies.push({
+        x: Math.random() * (canvas.width - 90) + 20,
+        y: -100,
+        width: 50,
+        height: 90,
+        speed: 5 + Math.random() * 3
+    });
+}, 1000);
+
+let roadOffset = 0;
+
+function updateEnemies() {
+    enemies.forEach((enemy, i) => {
+        enemy.y += enemy.speed;
+
+        if (enemy.y > canvas.height) {
+            enemies.splice(i, 1);
+            score++;
+        }
+    });
+}
+
+function drawEnemies() {
+    ctx.fillStyle = "red";
+
+    enemies.forEach(enemy => {
+        ctx.fillRect(
+            enemy.x,
+            enemy.y,
+            enemy.width,
+            enemy.height
+        );
+    });
+}
+
+function drawRoad() {
+    ctx.fillStyle = "#444";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    roadOffset += 8;
+    if (roadOffset >= 60) roadOffset = 0;
+
+    ctx.fillStyle = "white";
+
+    for (let y = -60; y < canvas.height; y += 60) {
+        ctx.fillRect(
+            canvas.width / 2 - 4,
+            y + roadOffset,
+            8,
+            35
+        );
+    }
+}
+
+function drawScore() {
+    ctx.fillStyle = "white";
+    ctx.font = "28px Arial";
+    ctx.fillText("Score: " + score, 20, 40);
+}
+function collision(a, b) {
+    return (
+        a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y
+    );
+}
+
+function checkCollision() {
+    enemies.forEach(enemy => {
+        if (collision(car, enemy)) {
+            gameOver = true;
+        }
+    });
+}
+
+function showGameOver() {
+    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+
+    ctx.font = "45px Arial";
+    ctx.fillText(
+        "Game Over",
+        canvas.width / 2,
+        canvas.height / 2 - 30
+    );
+
+    ctx.font = "25px Arial";
+    ctx.fillText(
+        "Score: " + score,
+        canvas.width / 2,
+        canvas.height / 2 + 20
+    );
+
+    ctx.font = "18px Arial";
+    ctx.fillText(
+        "Touch یا Space برای شروع دوباره",
+        canvas.width / 2,
+        canvas.height / 2 + 60
+    );
+}
+
+function restart() {
+    enemies = [];
+    score = 0;
+    gameOver = false;
+    resetCar();
+}
+
+function gameLoop() {
+
+    if (!gameOver) {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        drawRoad();
+        updateCar();
+
+        drawCar();
+
+        updateEnemies();
+        drawEnemies();
+
+        checkCollision();
+        drawScore();
+
+    } else {
+        showGameOver();
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+document.addEventListener("keydown", e => {
+    if (e.code === "Space" && gameOver) {
+        restart();
+    }
+});
+
+canvas.addEventListener("touchstart", () => {
+    if (gameOver) restart();
+});
+
+canvas.addEventListener("click", () => {
+    if (gameOver) restart();
+});
+
+gameLoop();
