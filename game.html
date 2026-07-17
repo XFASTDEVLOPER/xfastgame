@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XFAST Games</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050505;
+color:white;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 40px;
+background:#111;
+border-bottom:2px solid cyan;
+}
+
+.logo{
+font-size:32px;
+font-weight:bold;
+color:#00e5ff;
+text-shadow:0 0 15px cyan;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+}
+
+nav a:hover{
+color:cyan;
+}
+
+.title{
+text-align:center;
+padding:60px 20px 30px;
+}
+
+.title h1{
+font-size:48px;
+color:#00e5ff;
+text-shadow:0 0 20px cyan;
+}
+
+.games{
+display:flex;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+padding:40px;
+}
+
+.card{
+width:300px;
+background:#111;
+padding:25px;
+border:2px solid cyan;
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,255,255,.3);
+transition:.3s;
+text-align:center;
+}
+
+.card:hover{
+transform:translateY(-10px);
+box-shadow:0 0 35px cyan;
+}
+
+.card h2{
+margin-bottom:15px;
+}
+
+.card p{
+color:#ccc;
+margin-bottom:25px;
+}
+
+.button{
+display:inline-block;
+padding:14px 28px;
+border:2px solid cyan;
+border-radius:30px;
+color:white;
+text-decoration:none;
+transition:.3s;
+}
+
+.button:hover{
+background:cyan;
+color:black;
+}
+
+footer{
+margin-top:60px;
+padding:25px;
+text-align:center;
+border-top:2px solid cyan;
+color:#888;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">XFAST</div>
+
+<nav>
+<a href="index.html">خانه</a>
+<a href="about.html">درباره</a>
+</nav>
+
+</header>
+
+<section class="title">
+
+<h1>🎮 بازی‌های XFAST</h1>
+
+<p>یکی از بازی‌های زیر را انتخاب کن.</p>
+
+</section>
+
+<section class="games">
+
+<div class="card">
+
+<h2>🎯 تیراندازی</h2>
+
+<p>
+یک بازی تیراندازی ساده با امتیاز.
+</p>
+
+<a class="button" href="games/shooter.html">
+
+شروع بازی
+
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>🚗 ماشین</h2>
+
+<p>
+از ماشین‌های روبه‌رو فرار کن و رکورد بزن.
+</p>
+
+<a class="button" href="games/car.html">
+
+شروع بازی
+
+</a>
+
+</div>
+
+</section>
+
+<footer>
+
+© XFAST Gaming
+
+</footer>
+
+</body>
+</html>
